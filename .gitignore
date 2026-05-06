@@ -1,0 +1,17 @@
+# Python
+ragenv/
+__pycache__/
+*.pyc
+.env
+
+# Data / Vector DB (optional)
+faiss_index/
+data/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# OS
+.DS_Store
+Thumbs.db
