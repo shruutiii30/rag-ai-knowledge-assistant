@@ -1,0 +1,21 @@
+# Flask RAG backend
+flask>=3.0.0
+flask-cors>=4.0.0
+python-dotenv>=1.0.0
+openai>=1.0.0
+
+# LangChain + vector store
+langchain-community>=0.3.0
+langchain-core>=0.3.0
+langchain-text-splitters>=0.3.0
+sentence-transformers>=2.3.0
+faiss-cpu>=1.8.0
+
+# Document loaders
+pypdf>=4.0.0
+docx2txt>=0.8
+
+# Spreadsheets
+pandas>=2.0.0
+openpyxl>=3.1.0
+xlrd>=2.0.0

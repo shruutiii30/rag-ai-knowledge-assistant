@@ -4,7 +4,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Send, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageBubble, TypingIndicator, type Message } from "./message";
 import { askQuestion } from "@/lib/api";
 
@@ -18,16 +17,19 @@ export function ChatInterface({ isReady }: ChatInterfaceProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = useCallback(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    const viewport = scrollRef.current;
+    if (!viewport) return;
+    viewport.scrollTop = viewport.scrollHeight;
+    messagesEndRef.current?.scrollIntoView({ block: "end", behavior: "auto" });
   }, []);
 
   useEffect(() => {
-    scrollToBottom();
+    const id = requestAnimationFrame(scrollToBottom);
+    return () => cancelAnimationFrame(id);
   }, [messages, isLoading, scrollToBottom]);
 
   useEffect(() => {
@@ -96,12 +98,12 @@ export function ChatInterface({ isReady }: ChatInterfaceProps) {
   };
 
   return (
-    <Card className="flex flex-col h-[600px]">
-      <CardHeader className="flex-shrink-0 border-b">
+    <Card className="flex h-[600px] min-h-[600px] flex-col gap-0 overflow-hidden py-0">
+      <CardHeader className="flex-shrink-0 border-b py-5">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <MessageSquare className="size-5" />
-            Chat with your PDFs
+            Chat with your documents
           </CardTitle>
           {messages.length > 0 && (
             <Button variant="ghost" size="sm" onClick={clearHistory}>
@@ -110,18 +112,24 @@ export function ChatInterface({ isReady }: ChatInterfaceProps) {
           )}
         </div>
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
-        <ScrollArea className="flex-1 p-4">
-          <div ref={scrollRef} className="space-y-4">
+      <CardContent className="flex min-h-0 flex-1 flex-col gap-0 overflow-hidden p-0">
+        <div
+          ref={scrollRef}
+          className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-4 pb-2"
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions"
+        >
+          <div className="space-y-4">
             {messages.length === 0 ? (
-              <div className="h-full flex items-center justify-center text-center text-muted-foreground py-20">
+              <div className="flex flex-col items-center justify-center py-20 text-center text-muted-foreground">
                 <div>
                   <MessageSquare className="size-12 mx-auto mb-4 opacity-50" />
                   <p className="text-lg font-medium">No messages yet</p>
                   <p className="text-sm">
                     {isReady
-                      ? "Ask a question about your uploaded documents"
-                      : "Upload and process PDFs to start chatting"}
+                      ? "Ask a question about your uploaded files"
+                      : "Upload and process documents to start chatting"}
                   </p>
                 </div>
               </div>
@@ -133,12 +141,17 @@ export function ChatInterface({ isReady }: ChatInterfaceProps) {
                 {isLoading && <TypingIndicator />}
               </>
             )}
+            <div
+              ref={messagesEndRef}
+              className="h-px w-full shrink-0"
+              aria-hidden
+            />
           </div>
-        </ScrollArea>
+        </div>
 
         <form
           onSubmit={handleSubmit}
-          className="flex-shrink-0 border-t p-4 bg-background"
+          className="flex-shrink-0 border-t bg-background p-4"
         >
           {errorMessage && (
             <p className="mb-2 text-sm text-destructive">{errorMessage}</p>
@@ -152,7 +165,7 @@ export function ChatInterface({ isReady }: ChatInterfaceProps) {
               placeholder={
                 isReady
                   ? "Ask a question about your documents..."
-                  : "Upload and process PDFs first..."
+                  : "Upload and process documents first..."
               }
               disabled={!isReady || isLoading}
               className="flex-1 px-4 py-2 rounded-lg border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"

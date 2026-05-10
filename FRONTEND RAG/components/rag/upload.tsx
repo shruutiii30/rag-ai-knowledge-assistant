@@ -7,6 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { uploadFiles, processFiles } from "@/lib/api";
 
+const ALLOWED_FILE_RE = /\.(pdf|txt|docx|csv|xlsx|xls)$/i;
+
+function isAllowedDocumentFile(file: File): boolean {
+  return ALLOWED_FILE_RE.test(file.name);
+}
+
 interface FileUploadProps {
   onProcessComplete: () => void;
 }
@@ -33,9 +39,7 @@ export function FileUpload({ onProcessComplete }: FileUploadProps) {
     e.preventDefault();
     setIsDragging(false);
     
-    const droppedFiles = Array.from(e.dataTransfer.files).filter(
-      (file) => file.type === "application/pdf"
-    );
+    const droppedFiles = Array.from(e.dataTransfer.files).filter(isAllowedDocumentFile);
     
     if (droppedFiles.length > 0) {
       setFiles((prev) => [...prev, ...droppedFiles]);
@@ -46,9 +50,7 @@ export function FileUpload({ onProcessComplete }: FileUploadProps) {
 
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const selectedFiles = Array.from(e.target.files).filter(
-        (file) => file.type === "application/pdf"
-      );
+      const selectedFiles = Array.from(e.target.files).filter(isAllowedDocumentFile);
       setFiles((prev) => [...prev, ...selectedFiles]);
       setUploadStatus("idle");
       setProcessStatus("idle");
@@ -98,7 +100,7 @@ export function FileUpload({ onProcessComplete }: FileUploadProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="size-5" />
-          Upload PDFs
+          Upload documents
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -114,13 +116,13 @@ export function FileUpload({ onProcessComplete }: FileUploadProps) {
         >
           <Upload className="size-10 mx-auto text-muted-foreground mb-4" />
           <p className="text-muted-foreground mb-2">
-            Drag and drop PDF files here, or
+            Drag and drop PDF, TXT, Word, CSV, or Excel files here, or
           </p>
           <label>
             <input
               type="file"
               multiple
-              accept=".pdf"
+              accept=".pdf,.txt,.docx,.csv,.xlsx,.xls,application/pdf,text/plain,text/csv"
               onChange={handleFileSelect}
               className="hidden"
             />

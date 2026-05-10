@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'PDF Q&A - RAG System',
-  description: 'Upload PDF documents and ask questions using AI-powered retrieval augmented generation',
+  title: 'Document Intelligence - RAG',
+  description: 'Upload PDF, Word, spreadsheets, CSV, or text files and ask questions with retrieval-augmented generation',
   generator: 'v0.app',
   icons: {
     icon: [

@@ -1,36 +1,69 @@
-from transformers import pipeline
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
 
-generator = pipeline(
-    "text-generation",
-    model="distilgpt2"
+load_dotenv()
+
+client = OpenAI(
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    base_url="https://openrouter.ai/api/v1"
 )
 
-def generate_answer(query, docs):
-    context = "\n\n".join([doc.page_content for doc in docs])
+MAX_CONTEXT_CHARS = 2500
 
-    prompt = f"""
-    Based on the context below, answer the question briefly.
-    If the answer is not present, say "I don't know."
+_SYSTEM_PROMPT = """You are a document intelligence assistant.
 
-    Context:
-    {context[:800]}
+Answer ONLY using the document excerpts supplied in the final user message (the "Context excerpts" section).
 
-    Question:
-    {query}
+Use the preceding conversation turns to resolve pronouns and follow-ups (for example tie "its" / "they" / "that" back to entities already discussed).
 
-    Answer:
-    """
+IMPORTANT:
+Mention page numbers in your answer wherever possible.
 
-    response = generator(
-        prompt,
-        max_new_tokens=80,
-        do_sample=False
+If partial information exists, summarize it.
+
+Only say that you cannot find enough information / "I don't know" if nothing relevant appears in Context excerpts."""
+
+def generate_answer(query, docs, conversation_history=None):
+    conversation_history = conversation_history or []
+
+    context_parts = []
+
+    for doc in docs:
+        page = doc.metadata.get("page", "Unknown")
+        content = doc.page_content
+
+        context_parts.append(
+            f"[Page {page}]\n{content}"
+        )
+
+    context = "\n\n".join(context_parts)
+
+    excerpt_block = f"""Use ONLY the following Context excerpts when answering.
+
+Context excerpts:
+{context[:MAX_CONTEXT_CHARS]}
+
+Current question:
+{query}
+
+Answer concisely using the excerpts. Mention page numbers when citing."""
+
+    messages = [{"role": "system", "content": _SYSTEM_PROMPT}]
+
+    for turn in conversation_history:
+        role = turn.get("role")
+        content = (turn.get("content") or "").strip()
+        if role not in ("user", "assistant") or not content:
+            continue
+        messages.append({"role": role, "content": content})
+
+    messages.append({"role": "user", "content": excerpt_block})
+
+    response = client.chat.completions.create(
+        model="openai/gpt-4o-mini",
+        messages=messages,
+        temperature=0
     )
 
-    generated_text = response[0]["generated_text"]
-
-    # Return only answer part
-    if "Answer:" in generated_text:
-        return generated_text.split("Answer:")[-1].strip()
-
-    return generated_text
+    return response.choices[0].message.content

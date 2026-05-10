@@ -21,10 +21,10 @@ export default function Home() {
             <FileText className="size-8 text-primary" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-balance">
-            PDF Question Answering
+            Document Intelligence
           </h1>
           <p className="text-muted-foreground mt-2 text-balance">
-            Upload your PDF documents and ask questions about their content
+            Upload documents (PDF, Word, spreadsheets, CSV, text) and ask questions about them
           </p>
         </header>
 
@@ -35,7 +35,7 @@ export default function Home() {
             <div className="bg-muted/50 rounded-lg p-4 text-sm">
               <h3 className="font-medium mb-2">How it works</h3>
               <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
-                <li>Upload one or more PDF files</li>
+                <li>Upload supported files (PDF, TXT, DOCX, CSV, XLS/XLSX)</li>
                 <li>Click &quot;Process Files&quot; to index content</li>
                 <li>Ask questions about your documents</li>
               </ol>
