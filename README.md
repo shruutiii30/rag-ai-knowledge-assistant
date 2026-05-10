@@ -146,16 +146,6 @@ The application will be available at `http://localhost:3000`.
 
 ---
 
-## 📸 Screenshots
-
-### Document Intelligence
-![Document QA](assets/document_qa.png)
-
-### Structured Data Analytics
-![Data Analytics](assets/data_agent.png)
-
----
-
 ## 💡 Example Use Cases
 
 ### Document Q&A
@@ -186,17 +176,6 @@ Key challenges encountered and solved during development:
 
 ---
 
-## 🔮 Roadmap
-
-- [ ] Cloud deployment (AWS / GCP / Azure)
-- [ ] User authentication & session management
-- [ ] Configurable model selector (GPT-4o, Claude, Gemini, etc.)
-- [ ] Hybrid semantic + keyword search
-- [ ] Role-based document access control
-- [ ] Dashboard for analytics visualization
-
----
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please open an issue first to discuss what you'd like to change, then submit a pull request.
@@ -208,6 +187,3 @@ Contributions are welcome! Please open an issue first to discuss what you'd like
 5. Open a Pull Request
 
 
----
-
-<p align="center">Built with ❤️ using LangChain, FAISS, and OpenRouter</p>
