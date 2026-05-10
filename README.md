@@ -1,248 +1,213 @@
-# 🤖 RAG-Based AI Knowledge Base Assistant
+# 🧠 Hybrid AI Knowledge Assistant
 
-An end-to-end **Retrieval-Augmented Generation (RAG)** system that allows users to upload multiple PDF documents and ask natural language questions to receive **context-aware answers with source attribution**.
-
-This project combines **Flask APIs, semantic search, FAISS vector database, HuggingFace embeddings, and a modern frontend UI** to create a real-world AI knowledge assistant.
+> A production-oriented, full-stack AI system that unifies **document intelligence** and **structured data analytics** into a single conversational interface.
 
 ---
 
-# 🚀 Features
+## 📌 Overview
 
-✅ Upload multiple PDF documents  
-✅ Extract and preprocess document text  
-✅ Intelligent chunking with overlap  
-✅ Semantic search using embeddings  
-✅ Fast vector retrieval with FAISS  
-✅ Context-aware question answering  
-✅ Source citation (page + content preview)  
-✅ Chat memory for follow-up questions  
-✅ Persistent vector storage  
-✅ Full-stack frontend integration  
+The **Hybrid AI Knowledge Assistant** is a context-aware, multi-source AI platform that allows users to interact naturally with both unstructured documents and structured business data. It combines a **Retrieval-Augmented Generation (RAG)** pipeline for documents with a **Pandas Data Agent** for analytics — all through a unified conversational interface with persistent memory.
 
 ---
 
-# 🧠 System Architecture
+## ✨ Features
 
-```text
-User
- ↓
-Frontend UI
- ↓
-Flask APIs
- ↓
-Document Processing
- ↓
-Chunking
- ↓
-Embeddings
- ↓
-FAISS Vector Store
- ↓
-Retrieval
- ↓
-LLM Answer Generation
- ↓
-Answer + Sources
+### 📄 Document Intelligence (RAG Pipeline)
+Supports **PDF**, **DOCX**, and **TXT** file formats.
+
+| Stage | Description |
+|-------|-------------|
+| Upload | Accepts and parses multi-format documents |
+| Chunking | Splits documents into semantically meaningful segments |
+| Embeddings | Converts chunks into vector representations via HuggingFace |
+| FAISS Indexing | Stores and retrieves vectors efficiently |
+| LLM Generation | Produces grounded answers via OpenRouter |
+
+**Capabilities:**
+- Semantic search across uploaded documents
+- Source-cited, grounded answers
+- Multi-turn conversational memory
+- OpenRouter LLM integration (GPT-4o-mini)
+
+---
+
+### 📊 Structured Data Intelligence (Pandas Data Agent)
+Supports **CSV**, **XLSX**, and **XLS** file formats.
+
+| Stage | Description |
+|-------|-------------|
+| Upload | Ingests tabular business data |
+| Pandas Agent | Runs dynamic Python-based analysis |
+| Memory | Retains follow-up query context |
+| Answer | Returns precise, computed results |
+
+**Capabilities:**
+- Aggregations, filtering, and sorting
+- Follow-up query chaining with memory
+- Exact numeric analytics on business data
+
+**Example Conversation:**
+```
+Q: What is the total sales?
+Q: Excluding cancelled orders?
+Q: Which region has the highest profit?
 ```
 
 ---
 
-# 🛠️ Tech Stack
+## 🏗️ Architecture
 
-## Backend
-- Python
-- Flask
-- LangChain
-
-## AI / NLP
-- HuggingFace Transformers
-- HuggingFace Embeddings
-- Retrieval-Augmented Generation (RAG)
-
-## Vector Database
-- FAISS
-
-## Document Processing
-- PyPDF
-
-## Frontend
-- React
-- Tailwind CSS
-
-## Testing
-- Postman
-
----
-
-# 📂 Project Structure
-
-```text
-AI-Knowledge-Assistant/
-│
-├── app.py
-├── ingestion.py
-├── chunking.py
-├── embeddings.py
-├── retrieval.py
-├── llm.py
-├── requirements.txt
-│
-├── frontend/
-│   ├── src/
-│   ├── package.json
-│
-├── data/
-├── faiss_index/
-│
-└── README.md
+```
+User Upload
+     │
+     ▼
+File Type Detection
+     │
+     ├── PDF / DOCX / TXT ──► RAG Pipeline
+     │                          ├── Chunking
+     │                          ├── HuggingFace Embeddings
+     │                          └── FAISS Vector Store
+     │
+     └── CSV / XLSX / XLS ──► Pandas Data Agent
+                                └── Dynamic Analysis
+     │
+     ▼
+OpenRouter LLM (GPT-4o-mini)
+     │
+     ▼
+Answer + Memory + Source Citations
 ```
 
 ---
 
-# ⚙️ Installation
+## 🛠️ Tech Stack
 
-## 1. Clone Repository
+| Layer | Technology |
+|-------|-----------|
+| **Backend** | Python, Flask, LangChain |
+| **Frontend** | Next.js 14, React, Tailwind CSS |
+| **Vector Store** | FAISS |
+| **Data Processing** | Pandas |
+| **LLM Provider** | OpenRouter API (GPT-4o-mini) |
+| **Embeddings** | HuggingFace Embeddings |
 
+---
+
+## 📂 Supported File Types
+
+| Format | Extension | Processing Mode |
+|--------|-----------|----------------|
+| PDF Document | `.pdf` | RAG Pipeline |
+| Word Document | `.docx` | RAG Pipeline |
+| Plain Text | `.txt` | RAG Pipeline |
+| CSV File | `.csv` | Pandas Data Agent |
+| Excel Workbook | `.xlsx` / `.xls` | Pandas Data Agent |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- OpenRouter API Key
+
+### 1. Clone the Repository
 ```bash
-git clone <your-github-repo-url>
-cd <project-folder>
+git clone https://github.com/your-username/hybrid-ai-knowledge-assistant.git
+cd hybrid-ai-knowledge-assistant
 ```
 
----
-
-## 2. Create Virtual Environment
-
-### Windows
-
+### 2. Backend Setup
 ```bash
-python -m venv ragenv
-ragenv\Scripts\activate
-```
+# Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
----
-
-## 3. Install Backend Dependencies
-
-```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
----
+# Configure environment variables
+cp .env.example .env
+# Add your OPENROUTER_API_KEY to .env
 
-## 4. Run Backend
-
-```bash
+# Start the Flask server
 python app.py
 ```
 
-Backend runs on:
-
-```text
-http://127.0.0.1:5000
-```
-
----
-
-## 5. Run Frontend
-
+### 3. Frontend Setup
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Frontend runs on:
+The application will be available at `http://localhost:3000`.
 
-```text
-http://localhost:5173
+---
+
+## 📸 Screenshots
+
+### Document Intelligence
+![Document QA](assets/document_qa.png)
+
+### Structured Data Analytics
+![Data Analytics](assets/data_agent.png)
+
+---
+
+## 💡 Example Use Cases
+
+### Document Q&A
+```
+- "What is NAIRP and what are its objectives?"
+- "Summarize the key recommendations from the report."
+- "What is the proposed budget outlined in the document?"
+```
+
+### Structured Data Analytics
+```
+- "What is the total revenue for Q3?"
+- "Show me sales figures excluding cancelled orders."
+- "Which region generated the highest profit last year?"
 ```
 
 ---
 
-# 📌 API Endpoints
+## ⚡ Engineering Challenges
 
-## Upload Documents
+Key challenges encountered and solved during development:
 
-### POST `/upload`
-
-Uploads multiple PDFs.
-
----
-
-## Process Documents
-
-### POST `/process`
-
-Processes uploaded files:
-- Extraction
-- Cleaning
-- Chunking
-- Embedding
-- Storage
+- **Hallucination control** — grounding LLM responses strictly to retrieved document chunks to prevent fabricated answers
+- **Retrieval relevance** — tuning chunk size, overlap, and embedding strategies to improve semantic search accuracy
+- **Hybrid routing** — designing a clean decision layer to correctly direct queries to either the RAG pipeline or the Pandas Data Agent
+- **Cross-pipeline memory** — maintaining coherent conversational context across both document and structured data sessions
+- **Large file ingestion** — handling heavy PDFs and Excel files without blocking the server or degrading response latency
 
 ---
 
-## Ask Questions
+## 🔮 Roadmap
 
-### POST `/ask`
-
-Returns:
-- Answer
-- Source references
-
----
-
-# 🔍 Example Questions
-
-Try asking:
-
-- What is this document about?
-- What is NAIRP?
-- What are the key recommendations?
-- What budget is proposed?
-- How can this help AI research?
+- [ ] Cloud deployment (AWS / GCP / Azure)
+- [ ] User authentication & session management
+- [ ] Configurable model selector (GPT-4o, Claude, Gemini, etc.)
+- [ ] Hybrid semantic + keyword search
+- [ ] Role-based document access control
+- [ ] Dashboard for analytics visualization
 
 ---
 
-# ⚠️ Challenges Faced
+## 🤝 Contributing
 
-During development, the following real-world issues were handled:
+Contributions are welcome! Please open an issue first to discuss what you'd like to change, then submit a pull request.
 
-### 1. LangChain Import Changes
-Updated imports due to package restructuring.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add your feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
 
-### 2. OpenAI API Quota Limits
-Switched to local HuggingFace embeddings.
-
-### 3. Retrieval API Changes
-Updated deprecated methods to newer interfaces.
-
-### 4. Frontend–Backend Integration
-Handled CORS and API communication.
-
-### 5. Model Limitations
-Used lightweight local models for cost-efficient inference.
 
 ---
 
-# 📈 Future Improvements
-
-- Upgrade to production LLMs
-- Add reranking models
-- Deploy on cloud
-- Add authentication
-- Support DOCX, TXT, CSV
-
----
-
-# 💼 Resume Highlights
-
-This project demonstrates:
-
-- AI system design
-- Retrieval-Augmented Generation
-- Semantic search
-- Backend API engineering
-- Frontend integration
-- Production-style debugging
-
+<p align="center">Built with ❤️ using LangChain, FAISS, and OpenRouter</p>
