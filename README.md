@@ -6,7 +6,7 @@
 
 ## 📌 Overview
 
-The **Hybrid AI Knowledge Assistant** is a context-aware, multi-source AI platform that allows users to interact naturally with both unstructured documents and structured business data. It combines a **Retrieval-Augmented Generation (RAG)** pipeline for documents with a **Pandas Data Agent** for analytics — all through a unified conversational interface with persistent memory.
+The **Hybrid AI Knowledge Assistant** is a context-aware, multi-source AI platform that allows users to interact naturally with both unstructured documents and structured business data. It combines a **Retrieval-Augmented Generation (RAG)** pipeline for documents with a **Pandas Data Agent** for analytics — all through a unified conversational interface with Session-based conversational memory.
 
 ---
 
@@ -18,7 +18,7 @@ Supports **PDF**, **DOCX**, and **TXT** file formats.
 | Stage | Description |
 |-------|-------------|
 | Upload | Accepts and parses multi-format documents |
-| Chunking | Splits documents into semantically meaningful segments |
+| Chunking | Splits documents into Recursive text chunking with overlap |
 | Embeddings | Converts chunks into vector representations via HuggingFace |
 | FAISS Indexing | Stores and retrieves vectors efficiently |
 | LLM Generation | Produces grounded answers via OpenRouter |
@@ -37,7 +37,7 @@ Supports **CSV**, **XLSX**, and **XLS** file formats.
 | Stage | Description |
 |-------|-------------|
 | Upload | Ingests tabular business data |
-| Pandas Agent | Runs dynamic Python-based analysis |
+| Pandas Agent | Runs Rule-driven Pandas Data Agent |
 | Memory | Retains follow-up query context |
 | Answer | Returns precise, computed results |
 
