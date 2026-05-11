@@ -172,7 +172,7 @@ Key challenges encountered and solved during development:
 - **Retrieval relevance** — tuning chunk size, overlap, and embedding strategies to improve semantic search accuracy
 - **Hybrid routing** — designing a clean decision layer to correctly direct queries to either the RAG pipeline or the Pandas Data Agent
 - **Cross-pipeline memory** — maintaining coherent conversational context across both document and structured data sessions
-- **Large file ingestion** — handling heavy PDFs and Excel files without blocking the server or degrading response latency
+- **Large file ingestion** — Identified and optimized large-file ingestion bottlenecks
 
 ---
 
